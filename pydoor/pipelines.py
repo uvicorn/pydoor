@@ -8,7 +8,7 @@ def generate_pipes(steps: list, data):
     if not le: return
     cache = data
     for el in steps:
-        if isinstance(type(el), BaseStep):
+        if isinstance(el, Step) or isinstance(el, BasePipeLine): # isinstance(type(el), BaseStep)
             step = el.run(data=cache)
         elif isinstance(el, FunctionType):
             step = validate_arguments(el)(cache)
