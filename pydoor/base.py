@@ -1,6 +1,5 @@
-from typing import Callable, NoReturn, Union, Type, Any
+from typing import Callable, Union, Type, Any
 from pydantic import validate_arguments
-from types import FunctionType
 
 class BaseStep(type):
     def __new__(cls, clsname, bases, dct):
@@ -13,7 +12,7 @@ class BaseStep(type):
                 if hasattr(obj, 'run'):
                     fu = obj.run
                     break
-    
+
         dct['run'] = validate_arguments(fu)
         return super(BaseStep, cls).__new__(cls, clsname, bases, dct)
 
@@ -29,7 +28,7 @@ class Step(metaclass=BaseStep):
 
 class BasePipeLine(metaclass=BaseStep):
     def __init__(
-        self, 
+        self,
         *steps: Union[Callable, 'BasePipeLine', Step, Type[Step]],
         **kwa
     ):
@@ -41,9 +40,9 @@ class BasePipeLine(metaclass=BaseStep):
         return data
 
 
-
+'''
 # test
-class Step1(Step): 
+class Step1(Step):
     def run(self, data: str): return data
 
 class Step3(Step1): pass
@@ -56,4 +55,4 @@ pipeline = PipeLine(
     Step3(r=123, t=123),
     PipeLine(Step4, Step5)
 )
-print(pipeline.run(123))
+print(pipeline.run(123)) '''
